@@ -25,7 +25,22 @@ sub filter
 sub process
 {
     my $in = shift;
-    $in .= 'px' if $in =~ /^\d+$/;
+
+    if (ref($in) eq 'HASH')
+    {
+        $in = join ' ', map
+        {
+            (my $k = $_) =~ s/_/-/g;
+            my $v = process($in->{$_});
+            "$k: $v;";
+        }
+        sort keys %$in;
+    }
+    elsif ($in =~ /^\d+$/)
+    {
+        $in .= 'px';
+    }
+
     return $in;
 }
 
