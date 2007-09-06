@@ -19,72 +19,9 @@ sub filter
              \]       # literal
              (.*)     # 3: check for other chars on the line
             }{
-                $1 . process($package, $2, 1, $1, $3) . $3
+                $1 . _process($package, $2, 1, $1, $3) . $3
             }xeg;
     return $in;
-}
-
-sub process
-{
-    my $package = shift;
-    my $in = shift;
-    my $top = shift;
-    my $pre = shift;
-    my $post = shift;
-    my $out = '';
-
-    if ($top && $in =~ /\./)
-    {
-        $out = resolve($package, $in);
-    }
-    else
-    {
-        no strict 'refs';
-        $out = $top ? ${$package.'::'.$in} : $in;
-    }
-
-    if (ref($out) eq 'HASH')
-    {
-        my $joiner = ' ';
-        my $indent = '';
-        if ($pre =~ /^\s*$/ && $post =~ /^\s*$/)
-        {
-            $joiner = "\n";
-            $indent = $pre;
-        }
-
-        my $first = 0;
-        $out = join $joiner, map
-        {
-            (my $k = $_) =~ s/_/-/g;
-            my $v = process($package, $out->{$_}, 0, $pre, $post);
-            ($first++ ? $indent : '') . "$k: $v;";
-        }
-        sort keys %$out;
-    }
-    elsif ($out =~ /^\d+$/)
-    {
-        $out .= 'px';
-    }
-
-    return $out;
-}
-
-sub resolve
-{
-    my $package = shift;
-    my $in = shift;
-    no strict 'refs';
-
-    my @levels = split qr/\./, $in;
-    my $global = shift @levels;
-    my $current = ${$package.'::'.$global};
-
-    $current = $current->{shift @levels}
-        or croak "Malformed input."
-            while @levels;
-
-    return $current;
 }
 
 sub fill
@@ -113,6 +50,71 @@ sub fill
     }
 
     return $values;
+}
+
+# this is where all the logic of expanding [foo] into some arbitrary string is
+sub _process
+{
+    my $package = shift;
+    my $in = shift;
+    my $top = shift;
+    my $pre = shift;
+    my $post = shift;
+    my $out = '';
+
+    if ($top && $in =~ /\./)
+    {
+        $out = _resolve($package, $in);
+    }
+    else
+    {
+        no strict 'refs';
+        $out = $top ? ${$package.'::'.$in} : $in;
+    }
+
+    if (ref($out) eq 'HASH')
+    {
+        my $joiner = ' ';
+        my $indent = '';
+        if ($pre =~ /^\s*$/ && $post =~ /^\s*$/)
+        {
+            $joiner = "\n";
+            $indent = $pre;
+        }
+
+        my $first = 0;
+        $out = join $joiner, map
+        {
+            (my $k = $_) =~ s/_/-/g;
+            my $v = _process($package, $out->{$_}, 0, $pre, $post);
+            ($first++ ? $indent : '') . "$k: $v;";
+        }
+        sort keys %$out;
+    }
+    elsif ($out =~ /^\d+$/)
+    {
+        $out .= 'px';
+    }
+
+    return $out;
+}
+
+# handle the [foo.bar.baz] form to mean $foo->{bar}->{baz}
+sub _resolve
+{
+    my $package = shift;
+    my $in = shift;
+    no strict 'refs';
+
+    my @levels = split qr/\./, $in;
+    my $global = shift @levels;
+    my $current = ${$package.'::'.$global};
+
+    $current = $current->{shift @levels}
+        or croak "Malformed input."
+            while @levels;
+
+    return $current;
 }
 
 =head1 NAME
