@@ -129,16 +129,11 @@ our $VERSION = '0.01';
 
 =head1 SYNOPSIS
 
-    # lib/Moonfall/MySite.pm
     package Moonfall::MySite;
     use Moonfall;
     our $page_width = 1000;
 
-    # as a standalone script:
-    echo "body { width: [page_width] }" | perl lib/Moonfall/MySite.pm
-    # outputs: body { width: 1000px }
-
-    # as a library:
+    package main;
     use Moonfall::MySite;
     @css = map { Moonfall::MySite->filter($_) } @css;
 
@@ -151,17 +146,13 @@ defined in one and only one place).
 
 See L<http://moonfall.org/> for more details.
 
-=head1 USAGE
-
-You can use this Moonfall library in two ways: as a library and as a script.
-
-=head2 As a Library
+=head1 FUNCTIONS
 
 The C<Moonfall> module has two exports: C<fill> and C<filter>. C<fill> is to
 be used by the Moonfall script itself, to aid in the creation of auto-sized
 fields. C<filter> is used by modules calling your library to filter input.
 
-=head3 fill HASHREF => HASHREF
+=head2 fill HASHREF => HASHREF
 
 Takes a hashref and uses the known values to fill in the unknown values. This
 is mostly useful for dynamically calculating the width of multiple elements.
@@ -175,7 +166,7 @@ Here's an example:
     fill { total => 1000, middle => 600, bottom => undef, top => undef }
         => { middle => 600, top => 200, bottom => 200 }
 
-=head3 filter STRING => STRING
+=head2 filter STRING => STRING
 
 This takes the pseudo-CSS passed in and applies what it can to return real CSS.
 Text within brackets C<[...]> is filtered.
@@ -189,11 +180,6 @@ C<-> to avoid having to quote the key.
 If any value looks like a plain integer, it will have C<px> appended to it.
 
 See the test distribution for concrete examples.
-
-=head2 As a Script
-
-You can simply use your library as a script and it will act as a filter between
-STDIN->STDOUT. See the synopsis.
 
 =head1 TODO
 
