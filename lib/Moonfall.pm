@@ -190,6 +190,10 @@ not listed on the front page. I suspect it supports full Lua evaluation, which
 would mean this C<Moonfall> implementation is not interoperable with the
 original version. Of course, in its stead, we would have full Perl evaluation.
 
+This means that the C<[foo.bar.baz]> form to mean C<< $foo->{bar}->{baz} >>
+(strictly for compatibility with the real Moonfall) is likely to be short
+lived.
+
 =head1 SEE ALSO
 
 The original Lua Moonfall: L<http://moonfall.org/>
