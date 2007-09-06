@@ -13,11 +13,11 @@ sub filter
     my $in = shift;
 
     $in =~ s{
-             (.*?)
+             (.*?)    # 1: indentation / check for other chars on the line
              \[       # literal
-             ([^]]+)  # 1: some number of closing-bracket chars
+             ([^]]+)  # 2: what we want to filter
              \]       # literal
-             (.*)
+             (.*)     # 3: check for other chars on the line
             }{
                 $1 . process($package, $2, 1, $1, $3) . $3
             }xeg;
