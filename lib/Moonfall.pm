@@ -117,11 +117,11 @@ sub fill
 
 =head1 NAME
 
-Moonfall - ???
+Moonfall - port of a Lua dynamic CSS generation library
 
 =head1 VERSION
 
-Version 0.01 released ???
+Version 0.01 released 06 Sep 07
 
 =cut
 
@@ -129,16 +129,82 @@ our $VERSION = '0.01';
 
 =head1 SYNOPSIS
 
+    # lib/Moonfall/MySite.pm
+    package Moonfall::MySite;
     use Moonfall;
-    do_stuff();
+    our $page_width = 1000;
+
+    # as a standalone script:
+    echo "body { width: [page_width] }" | perl lib/Moonfall/MySite.pm
+    # outputs: body { width: 1000px }
+
+    # as a library:
+    use Moonfall::MySite;
+    @css = map { Moonfall::MySite->filter($_) } @css;
 
 =head1 DESCRIPTION
 
+Moonfall is a Lua library for the dynamic generation of CSS. The problem it
+solves is making CSS more programmable. The most basic use is to define
+variables within CSS (e.g., so similar elements can have their common color
+defined in one and only one place).
 
+See L<http://moonfall.org/> for more details.
+
+=head1 USAGE
+
+You can use this Moonfall library in two ways: as a library and as a script.
+
+=head2 As a Library
+
+The C<Moonfall> module has two exports: C<fill> and C<filter>. C<fill> is to
+be used by the Moonfall script itself, to aid in the creation of auto-sized
+fields. C<filter> is used by modules calling your library to filter input.
+
+=head3 fill HASHREF => HASHREF
+
+Takes a hashref and uses the known values to fill in the unknown values. This
+is mostly useful for dynamically calculating the width of multiple elements.
+
+You must pass in a nonzero C<total> field which defines the total size. Pass
+in known values in the usual fashion (such as: C<< center => 300 >>). Unknown
+values should be explicitly set to C<undef> (such as: C<< left => undef >>).
+
+Here's an example:
+
+    fill { total => 1000, middle => 600, bottom => undef, top => undef }
+        => { middle => 600, top => 200, bottom => 200 }
+
+=head3 filter STRING => STRING
+
+This takes the pseudo-CSS passed in and applies what it can to return real CSS.
+Text within brackets C<[...]> is filtered.
+
+Plain strings (such as C<[foo]>) will be replaced with the value of the global
+scalar with that name (in this case, C<$Moonfall::MyApp::foo>). If that scalar
+is a hash reference, then each (key, value) pair will be turned into CSS-style
+C<key: value;> declarations. You may use underscores in key names instead of
+C<-> to avoid having to quote the key.
+
+If any value looks like a plain integer, it will have C<px> appended to it.
+
+See the test distribution for concrete examples.
+
+=head2 As a Script
+
+You can simply use your library as a script and it will act as a filter between
+STDIN->STDOUT. See the synopsis.
+
+=head1 TODO
+
+I haven't even looked at the C<Moonfall> source. It likely has some features
+not listed on the front page. I suspect it supports full Lua evaluation, which
+would mean this C<Moonfall> implementation is not interoperable with the
+original version. Of course, in its stead, we would have full Perl evaluation.
 
 =head1 SEE ALSO
 
-L<Foo::Bar>
+The original Lua Moonfall: L<http://moonfall.org/>
 
 =head1 AUTHOR
 
