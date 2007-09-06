@@ -24,7 +24,7 @@ BEGIN
 
     # from Moonfall::SimplestExample, this suggests we want inheritance
     our $page_width = 1000;
-    our $medium_em = "1.1";
+    our $medium_em = "1.1em";
 
     our $nav_link_attrs = {
         float => "right",

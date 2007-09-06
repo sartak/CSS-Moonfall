@@ -23,7 +23,7 @@ is($out, <<"EXPECTED", "simplest example from moonfall.org works");
 
 #top_container {
     width: 1000px;
-    font-size: 1.1;
+    font-size: 1.1em;
     }
 EXPECTED
 
@@ -33,6 +33,6 @@ BEGIN
     use Moonfall;
 
     our $page_width = 1000;
-    our $medium_em = "1.1";
+    our $medium_em = "1.1em";
 }
 
