@@ -2,8 +2,32 @@
 package Moonfall;
 use strict;
 use warnings;
+use parent 'Exporter';
 
+our @EXPORT = 'filter';
 
+sub filter
+{
+    my $package = shift;
+    my $in = shift;
+    no strict 'refs';
+
+    $in =~ s{
+             \[       # literal
+             ([^]]+)  # 1: some number of closing-bracket chars
+             \]       # literal
+            }{
+                process(${$package.'::'.$1});
+            }xeg;
+    return $in;
+}
+
+sub process
+{
+    my $in = shift;
+    $in .= 'px' if $in =~ /^\d+$/;
+    return $in;
+}
 
 =head1 NAME
 
