@@ -3,45 +3,104 @@ package Moonfall;
 use strict;
 use warnings;
 use parent 'Exporter';
+use Carp;
 
-our @EXPORT = 'filter';
+our @EXPORT = qw/filter fill/;
 
 sub filter
 {
     my $package = shift;
     my $in = shift;
-    no strict 'refs';
 
     $in =~ s{
              \[       # literal
              ([^]]+)  # 1: some number of closing-bracket chars
              \]       # literal
             }{
-                process(${$package.'::'.$1});
+                process($package, $1, 1);
             }xeg;
     return $in;
 }
 
 sub process
 {
+    my $package = shift;
     my $in = shift;
+    my $top = shift;
+    my $out = '';
 
-    if (ref($in) eq 'HASH')
+    if ($top && $in =~ /\./)
     {
-        $in = join ' ', map
+        $out = resolve($package, $in);
+    }
+    else
+    {
+        no strict 'refs';
+        $out = $top ? ${$package.'::'.$in} : $in;
+    }
+
+    if (ref($out) eq 'HASH')
+    {
+        $out = join ' ', map
         {
             (my $k = $_) =~ s/_/-/g;
-            my $v = process($in->{$_});
+            my $v = process($package, $out->{$_}, 0);
             "$k: $v;";
         }
-        sort keys %$in;
+        sort keys %$out;
     }
-    elsif ($in =~ /^\d+$/)
+    elsif ($out =~ /^\d+$/)
     {
-        $in .= 'px';
+        $out .= 'px';
     }
 
-    return $in;
+    return $out;
+}
+
+sub resolve
+{
+    my $package = shift;
+    my $in = shift;
+    no strict 'refs';
+
+    my @levels = split qr/\./, $in;
+    my $global = shift @levels;
+    my $current = ${$package.'::'.$global};
+
+    $current = $current->{shift @levels}
+        or croak "Malformed input."
+            while @levels;
+
+    return $current;
+}
+
+sub fill
+{
+    my $values = shift;
+    my $total = $values->{total} or croak "You must define a total size in a call to fill.";
+    my $unfilled = 0;
+
+    for my $k (keys %$values)
+    {
+        next if $k eq 'total';
+        if (defined(my $w = $values->{$k}))
+        {
+            $total -= $w;
+        }
+        else
+        {
+            ++$unfilled;
+        }
+    }
+
+    $total = int($total / $unfilled);
+
+    for (values %$values)
+    {
+        defined or $_ = $total;
+    }
+
+    return $values;
 }
 
 =head1 NAME
