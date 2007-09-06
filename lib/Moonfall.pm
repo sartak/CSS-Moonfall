@@ -140,7 +140,7 @@ our $VERSION = '0.01';
 =head1 DESCRIPTION
 
 Moonfall is a Lua library for the dynamic generation of CSS. The problem it
-solves is making CSS more programmable. The most basic use is to define
+solves is making CSS more programmable. The most basic usage is to define
 variables within CSS (e.g., so similar elements can have their common color
 defined in one and only one place).
 
