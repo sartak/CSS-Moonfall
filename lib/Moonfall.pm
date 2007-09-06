@@ -13,11 +13,13 @@ sub filter
     my $in = shift;
 
     $in =~ s{
+             (.*?)
              \[       # literal
              ([^]]+)  # 1: some number of closing-bracket chars
              \]       # literal
+             (.*)
             }{
-                process($package, $1, 1);
+                $1 . process($package, $2, 1, $1, $3) . $3
             }xeg;
     return $in;
 }
@@ -27,6 +29,8 @@ sub process
     my $package = shift;
     my $in = shift;
     my $top = shift;
+    my $pre = shift;
+    my $post = shift;
     my $out = '';
 
     if ($top && $in =~ /\./)
@@ -41,11 +45,20 @@ sub process
 
     if (ref($out) eq 'HASH')
     {
-        $out = join ' ', map
+        my $joiner = ' ';
+        my $indent = '';
+        if ($pre =~ /^\s*$/ && $post =~ /^\s*$/)
+        {
+            $joiner = "\n";
+            $indent = $pre;
+        }
+
+        my $first = 0;
+        $out = join $joiner, map
         {
             (my $k = $_) =~ s/_/-/g;
-            my $v = process($package, $out->{$_}, 0);
-            "$k: $v;";
+            my $v = process($package, $out->{$_}, 0, $pre, $post);
+            ($first++ ? $indent : '') . "$k: $v;";
         }
         sort keys %$out;
     }
@@ -77,12 +90,11 @@ sub resolve
 sub fill
 {
     my $values = shift;
-    my $total = $values->{total} or croak "You must define a total size in a call to fill.";
+    my $total = delete $values->{total} or croak "You must define a total size in a call to fill.";
     my $unfilled = 0;
 
     for my $k (keys %$values)
     {
-        next if $k eq 'total';
         if (defined(my $w = $values->{$k}))
         {
             $total -= $w;
