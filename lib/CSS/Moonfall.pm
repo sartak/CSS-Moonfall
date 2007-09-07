@@ -1,5 +1,5 @@
 #!perl
-package Moonfall;
+package CSS::Moonfall;
 use strict;
 use warnings;
 use parent 'Exporter';
@@ -119,7 +119,7 @@ sub _resolve
 
 =head1 NAME
 
-Moonfall - port of a Lua dynamic CSS generation library
+CSS::Moonfall - port of a Lua CSS generation library
 
 =head1 VERSION
 
@@ -131,17 +131,20 @@ our $VERSION = '0.01';
 
 =head1 SYNOPSIS
 
-    package Moonfall::MySite;
-    use Moonfall;
+    package MySite::CSS;
+    use CSS::Moonfall;
     our $page_width = 1000;
+    our $colors = { background => '#000000', color => '#FFFFFF' };
 
     package main;
-    use Moonfall::MySite;
-    @css = map { Moonfall::MySite->filter($_) } @css;
+    print MySite::CSS->filter(<<"CSS");
+    body { width: [page_width]; }
+    #header { width: [$page_width-20]; $colors }
+    CSS
 
 =head1 DESCRIPTION
 
-Moonfall is a Lua library for the dynamic generation of CSS. The problem it
+C<Moonfall> is a program for the dynamic generation of CSS. The problem it
 solves is making CSS more programmable. The most basic usage is to define
 variables within CSS (e.g., so similar elements can have their common color
 defined in one and only one place).
@@ -150,8 +153,8 @@ See L<http://moonfall.org/> for more details.
 
 =head1 FUNCTIONS
 
-The C<Moonfall> module has two exports: C<fill> and C<filter>. C<fill> is to
-be used by the Moonfall script itself, to aid in the creation of auto-sized
+The C<CSS::Moonfall> module has two exports: C<fill> and C<filter>. C<fill> is
+to be used by the Moonfall script itself, to aid in the creation of auto-sized
 fields. C<filter> is used by modules calling your library to filter input.
 
 =head2 fill HASHREF => HASHREF
@@ -171,28 +174,18 @@ Here's an example:
 =head2 filter STRING => STRING
 
 This takes the pseudo-CSS passed in and applies what it can to return real CSS.
-Text within brackets C<[...]> is filtered.
+Text within brackets C<[...]> is filtered through C<eval>.
 
-Plain strings (such as C<[foo]>) will be replaced with the value of the global
-scalar with that name (in this case, C<$Moonfall::MyApp::foo>). If that scalar
-is a hash reference, then each (key, value) pair will be turned into CSS-style
-C<key: value;> declarations. You may use underscores in key names instead of
-C<-> to avoid having to quote the key.
+As a convenience, barewords (such as C<[foo]>) will be replaced with the value
+of the global scalar with that name. If that scalar is a hash reference, then
+each (key, value) pair will be turned into CSS-style C<key: value;>
+declarations. You may use underscores in key names instead of C<-> to avoid
+having to quote the key. This means that if you want to call functions, you
+must include a pair of parentheses or something else to distinguish it from
+a bareword (this is exactly the restriction on using unquoted variables in
+C<$hash{key}>)
 
 If any value looks like a plain integer, it will have C<px> appended to it.
-
-See the test distribution for concrete examples.
-
-=head1 TODO
-
-I haven't even looked at the C<Moonfall> source. It likely has some features
-not listed on the front page. I suspect it supports full Lua evaluation, which
-would mean this C<Moonfall> implementation is not interoperable with the
-original version. Of course, in its stead, we would have full Perl evaluation.
-
-This means that the C<[foo.bar.baz]> form to mean C<< $foo->{bar}->{baz} >>
-(strictly for compatibility with the real Moonfall) is likely to be short
-lived.
 
 =head1 SEE ALSO
 
@@ -208,13 +201,13 @@ No known bugs.
 
 Please report any bugs through RT: email
 C<bug-moonfall at rt.cpan.org>, or browse to
-L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Moonfall>.
+L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=CSS-Moonfall>.
 
 =head1 SUPPORT
 
 You can find this documentation for this module with the perldoc command.
 
-    perldoc Moonfall
+    perldoc CSS::Moonfall
 
 You can also look for information at:
 
@@ -222,19 +215,19 @@ You can also look for information at:
 
 =item * AnnoCPAN: Annotated CPAN documentation
 
-L<http://annocpan.org/dist/Moonfall>
+L<http://annocpan.org/dist/CSS-Moonfall>
 
 =item * CPAN Ratings
 
-L<http://cpanratings.perl.org/d/Moonfall>
+L<http://cpanratings.perl.org/d/CSS-Moonfall>
 
 =item * RT: CPAN's request tracker
 
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=Moonfall>
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=CSS-Moonfall>
 
 =item * Search CPAN
 
-L<http://search.cpan.org/dist/Moonfall>
+L<http://search.cpan.org/dist/CSS-Moonfall>
 
 =back
 

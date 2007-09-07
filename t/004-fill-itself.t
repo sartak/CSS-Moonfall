@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 use Test::More tests => 16;
-use Moonfall;
+use CSS::Moonfall;
 
 our $page_width = 800;
 

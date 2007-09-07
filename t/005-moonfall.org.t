@@ -252,7 +252,7 @@ EXPECTED
 BEGIN
 {
     package Moonfall::Org;
-    use Moonfall;
+    use CSS::Moonfall;
 
     our $page_width = 1000;
     our $large_em = "1.2em";

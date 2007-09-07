@@ -30,7 +30,7 @@ EXPECTED
 BEGIN
 {
     package Moonfall::SimplestExample;
-    use Moonfall;
+    use CSS::Moonfall;
 
     our $page_width = 1000;
     our $medium_em = "1.1em";

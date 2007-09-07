@@ -22,7 +22,7 @@ EXPECTED
 BEGIN
 {
     package Moonfall::SimpleExample;
-    use Moonfall;
+    use CSS::Moonfall;
 
     # from Moonfall::SimplestExample, this suggests we want inheritance
     our $page_width = 1000;

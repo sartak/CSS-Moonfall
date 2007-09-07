@@ -36,7 +36,7 @@ EXPECTED
 BEGIN
 {
     package Moonfall::Fill;
-    use Moonfall;
+    use CSS::Moonfall;
 
     our $logo_width = 300;
 
