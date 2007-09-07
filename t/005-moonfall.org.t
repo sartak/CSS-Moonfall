@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Test::More tests => 1;
 
-my $out = Moonfall::Org->filter(<<"INPUT");
+my $out = Moonfall::Org->filter(<<'INPUT');
 body { 
        font-family:'Trebuchet MS', sans-serif;
        }
@@ -29,19 +29,19 @@ body {
 #pushdown { 
             [header_div_attrs]
             background-color: #D68003;
-            width: [header_top_widths.pushdown];
+            width: [$header_top_widths->{pushdown}];
             }
 
 #spacer { 
           [header_div_attrs]
           background-color: #D6AD44;
-          width: [header_bottom_widths.spacer];
+          width: [$header_bottom_widths->{spacer}];
           }
 
 #contact { 
            [header_div_attrs]
            background-color: #AF9256;
-           width: [header_bottom_widths.contact];
+           width: [$header_bottom_widths->{contact}];
            }
 
 #contact a { 
@@ -51,7 +51,7 @@ body {
 #list { 
         [header_div_attrs]
         background-color: #663300;
-        width: [header_bottom_widths.list];
+        width: [$header_bottom_widths->{list}];
         }
 
 #list a { [nav_link_attrs] }
@@ -60,7 +60,7 @@ body {
 #download { 
             [header_div_attrs]
             background-color: #660000;
-            width: [header_bottom_widths.download];
+            width: [$header_bottom_widths->{download}];
             }
 
 #download a { 
@@ -71,7 +71,7 @@ body {
 #example { 
            [header_div_attrs]
            background-color: #996633;
-           width: [header_bottom_widths.example];
+           width: [$header_bottom_widths->{example}];
            }
 
 #example a { 

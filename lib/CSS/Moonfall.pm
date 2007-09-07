@@ -60,19 +60,19 @@ sub _process
     my $top = shift;
     my $pre = shift;
     my $post = shift;
-    my $out = '';
 
-    if ($top && $in =~ /\./)
+    $in =~ s/^\s+//;
+    $in =~ s/\s+$//;
+
+    if ($in =~ /^[a-zA-Z]\w*/)
     {
-        $out = _resolve($package, $in);
-    }
-    else
-    {
-        no strict 'refs';
-        $out = $top ? ${$package.'::'.$in} : $in;
+        return $in if !$top;
+        $in = '$' . $in;
     }
 
-    if (ref($out) eq 'HASH')
+    my $out = $top ? eval "package $package; no strict 'vars'; $in" : $in;
+
+    if (ref($out) && ref($out) eq 'HASH')
     {
         my $joiner = ' ';
         my $indent = '';
@@ -97,24 +97,6 @@ sub _process
     }
 
     return $out;
-}
-
-# handle the [foo.bar.baz] form to mean $foo->{bar}->{baz}
-sub _resolve
-{
-    my $package = shift;
-    my $in = shift;
-    no strict 'refs';
-
-    my @levels = split qr/\./, $in;
-    my $global = shift @levels;
-    my $current = ${$package.'::'.$global};
-
-    $current = $current->{shift @levels}
-        or croak "Malformed input."
-            while @levels;
-
-    return $current;
 }
 
 =head1 NAME

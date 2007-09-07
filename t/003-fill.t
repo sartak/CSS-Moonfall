@@ -3,16 +3,16 @@ use strict;
 use warnings;
 use Test::More tests => 1;
 
-my $out = Moonfall::Fill->filter(<<"INPUT");
+my $out = Moonfall::Fill->filter(<<'INPUT');
 #example {
     background-color: #996633;
-    width: [header_bottom_widths.example];
+    width: [$header_bottom_widths->{example}];
     height: 30px;
     }
 
 #contact {
     background-color: #AF9256;
-    width: [header_bottom_widths.contact];
+    width: [$header_bottom_widths->{contact}];
     height: 30px;
     }
 INPUT
