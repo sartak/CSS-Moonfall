@@ -5,7 +5,9 @@ use inc::Module::Install;
 name           'Moonfall';
 all_from       'lib//Moonfall.pm';
 
-requires       '';
+requires       'parent';
+requires       'Exporter';
+requires       'Carp';
 
 build_requires 'Test::More';
 
