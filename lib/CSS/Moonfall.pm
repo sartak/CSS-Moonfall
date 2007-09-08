@@ -166,11 +166,11 @@ sub _expand
 
 =head1 NAME
 
-CSS::Moonfall - port of a Lua CSS generation library
+CSS::Moonfall - port of Lua's Moonfall for dynamic CSS generation
 
 =head1 VERSION
 
-Version 0.01 released 06 Sep 07
+Version 0.01 released 07 Sep 07
 
 =cut
 
@@ -194,9 +194,24 @@ our $VERSION = '0.01';
 C<Moonfall> is a program for the dynamic generation of CSS. The problem it
 solves is making CSS more programmable. The most basic usage is to define
 variables within CSS (e.g., so similar elements can have their common color
-defined in one and only one place).
+defined in one and only one place). C<CSS::Moonfall> aims to be a faithful port
+from Lua to Perl.
 
 See L<http://moonfall.org/> for more details.
+
+=head1 DEVIATIONS FROM MOONFALL
+
+Obviously C<CSS::Moonfall> uses Perl (not Lua) as its programming language. :)
+
+C<Moonfall> is actually a standalone C program that filters CSS with its
+embedded Lua interpreter. C<CSS::Moonfall> is a module that lets you easily
+builds the tools to do the same task.
+
+Lua has only one data structure: the table. Perl has two: arrays and hashes.
+Lua's tables fulfill the purpose of both: it's an ordered table indexable by
+arbitrary strings. I've tried to make C<CSS::Moonfall> let you use both arrays
+and hashes. You should really only use hashes (it feels nicer that way). Later
+versions may have extra semantics (such as guaranteed ordering) tied to arrays.
 
 =head1 FUNCTIONS
 
@@ -229,8 +244,23 @@ each (key, value) pair will be turned into CSS-style C<key: value;>
 declarations. You may use underscores in key names instead of C<-> to avoid
 having to quote the key. This means that if you want to call functions, you
 must include a pair of parentheses or something else to distinguish it from
-a bareword (this is exactly the restriction on using unquoted variables in
-C<$hash{key}>)
+a bareword (much like in Perl itself for C<$hash{keys}>.
+
+Hashes (and arrays) are recursively expanded. If the input looks like this:
+
+    our $default = {
+        foo => {
+            color => '#FF0000',
+            baz => {
+                background_color => '#000000',
+            },
+        },
+    };
+
+then you'll get output that looks like:
+
+    color: #FF0000;
+    background-color: #000000;
 
 If any value looks like a plain integer, it will have C<px> appended to it.
 
@@ -238,16 +268,20 @@ If any value looks like a plain integer, it will have C<px> appended to it.
 
 The original Lua Moonfall: L<http://moonfall.org/>
 
-=head1 AUTHOR
+=head1 PORTER
 
 Shawn M Moore, C<< <sartak at gmail.com> >>
+
+=head1 ORIGINAL AUTHOR
+
+Kevin Swope, C<< <kevin at moonfall.org> >>
 
 =head1 BUGS
 
 No known bugs.
 
 Please report any bugs through RT: email
-C<bug-moonfall at rt.cpan.org>, or browse to
+C<bug-css-moonfall at rt.cpan.org>, or browse to
 L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=CSS-Moonfall>.
 
 =head1 SUPPORT
