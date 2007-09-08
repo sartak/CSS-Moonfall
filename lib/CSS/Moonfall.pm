@@ -72,7 +72,9 @@ sub _process
 
     my $out = $top ? eval "package $package; no strict 'vars'; $in" : $in;
 
-    if (ref($out) && ref($out) eq 'HASH')
+    my @kv = _expand($out);
+
+    if (@kv > 1)
     {
         my $joiner = ' ';
         my $indent = '';
@@ -85,18 +87,81 @@ sub _process
         my $first = 0;
         $out = join $joiner, map
         {
-            (my $k = $_) =~ s/_/-/g;
-            my $v = _process($package, $out->{$_}, 0, $pre, $post);
+            my ($k, $v) = @$_;
+            $k =~ s/_/-/g;
+            $v = _process($package, $v, 0, $pre, $post);
             ($first++ ? $indent : '') . "$k: $v;";
         }
-        sort keys %$out;
+        sort {$a->[0] cmp $b->[0]} @kv;
     }
-    elsif ($out =~ /^\d+$/)
+    elsif ($kv[0] =~ /^\d+$/)
     {
         $out .= 'px';
     }
 
     return $out;
+}
+
+# try to expand an array/hash ref, recursively, into a list of pairs
+# if a value is a reference, then the key is dropped and the value is expanded
+# in place
+sub _expand
+{
+    my $in = shift;
+    return $in if !ref($in);
+
+    my @kv;
+
+    if (ref($in) eq 'HASH')
+    {
+        while (my ($k, $v) = each %$in)
+        {
+            if (ref($v))
+            {
+                push @kv, _expand($v);
+            }
+            else
+            {
+                push @kv, [$k => $v];
+            }
+        }
+    }
+    elsif (ref($in) eq 'ARRAY')
+    {
+        if (ref($in->[0]) eq 'ARRAY')
+        {
+            for (@$in)
+            {
+                my ($k, $v) = @$_;
+                if (ref($v))
+                {
+                    push @kv, _expand($v);
+                }
+                else
+                {
+                    push @kv, [$k => $v];
+                }
+            }
+        }
+        else
+        {
+            my $i;
+            for ($i = 0; $i < @$in; $i += 2)
+            {
+                my ($k, $v) = ($in->[$i], $in->[$i+1]);
+                if (ref($v))
+                {
+                    push @kv, _expand($v);
+                }
+                else
+                {
+                    push @kv, [$k => $v];
+                }
+            }
+        }
+    }
+
+    return @kv;
 }
 
 =head1 NAME
