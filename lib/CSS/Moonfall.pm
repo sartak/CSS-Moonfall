@@ -186,7 +186,7 @@ our $VERSION = '0.01';
     package main;
     print MySite::CSS->filter(<<'CSS');
     body { width: [page_width]; }
-    #header { width: [$page_width-20]; $colors }
+    #header { width: [$page_width-20]; [colors] }
     CSS
 
 =head1 DESCRIPTION
