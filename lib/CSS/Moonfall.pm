@@ -17,9 +17,9 @@ sub filter
              \[       # literal
              ([^]]+)  # 2: what we want to filter
              \]       # literal
-             (.*)     # 3: check for other chars on the line
+             (?=(.*)) # 3: check for other chars on the line
             }{
-                $1 . _process($package, $2, 1, $1, $3) . $3
+                $1 . _process($package, $2, 1, $1, $3)
             }xeg;
     return $in;
 }
