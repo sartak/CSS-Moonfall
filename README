@@ -1,4 +1,4 @@
-Moonfall 0.01
+CSS::Moonfall 0.02
 
 Moonfall is a program for the dynamic generation of CSS. The problem it
 solves is making CSS more programmable. The most basic usage is to define
@@ -25,21 +25,21 @@ SUPPORT AND DOCUMENTATION
 After installing, you can find documentation for this module with the perldoc
 command.
 
-    perldoc Moonfall
+    perldoc CSS::Moonfall
 
 You can also look for information at:
 
     Search CPAN
-        http://search.cpan.org/dist/Moonfall
+        http://search.cpan.org/dist/CSS-Moonfall
 
     CPAN Request Tracker:
-        http://rt.cpan.org/NoAuth/Bugs.html?Dist=Moonfall
+        http://rt.cpan.org/NoAuth/Bugs.html?Dist=CSS-Moonfall
 
     AnnoCPAN, annotated CPAN documentation:
-        http://annocpan.org/dist/Moonfall
+        http://annocpan.org/dist/CSS-Moonfall
 
     CPAN Ratings:
-        http://cpanratings.perl.org/d/Moonfall
+        http://cpanratings.perl.org/d/CSS-Moonfall
 
 COPYRIGHT AND LICENSE
 

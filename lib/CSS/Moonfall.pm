@@ -170,11 +170,11 @@ CSS::Moonfall - port of Lua's Moonfall for dynamic CSS generation
 
 =head1 VERSION
 
-Version 0.01 released 07 Sep 07
+Version 0.02 released 08 Sep 07
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 =head1 SYNOPSIS
 
