@@ -13,7 +13,7 @@ CSS
 
 my $expected = <<'CSS';
 body { width: 1000px; }
-#header { width: 980px; background:#000000; color:#FFFFFF; }
+#header { width: 980px; background: #000000; color: #FFFFFF; }
 CSS
 
 is($got, $expected, "Synopsis works");
