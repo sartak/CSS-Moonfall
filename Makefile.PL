@@ -2,8 +2,9 @@
 use inc::Module::Install;
 
 # Define metadata
-name           'Moonfall';
-all_from       'lib//Moonfall.pm';
+name           'CSS-Moonfall';
+all_from       'lib/CSS/Moonfall.pm';
+author         'Shawn M Moore, C<< <sartak at gmail.com> >>';
 
 requires       'parent';
 requires       'Exporter';
