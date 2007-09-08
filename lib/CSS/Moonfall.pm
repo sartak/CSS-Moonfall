@@ -184,7 +184,7 @@ our $VERSION = '0.01';
     our $colors = { background => '#000000', color => '#FFFFFF' };
 
     package main;
-    print MySite::CSS->filter(<<"CSS");
+    print MySite::CSS->filter(<<'CSS');
     body { width: [page_width]; }
     #header { width: [$page_width-20]; $colors }
     CSS
