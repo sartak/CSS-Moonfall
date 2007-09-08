@@ -273,6 +273,11 @@ If any value looks like a plain integer, it will have C<px> appended to it.
 The code that looks for C<[...]> is just a simple regular expression. This means
 you cannot include C<]> in your Perl code. This will be fixed in 0.03.
 
+=item
+
+You cannot have the C<[...]> span multiple lines. This too will be fixed in
+0.03.
+
 =back
 
 =head1 SEE ALSO
