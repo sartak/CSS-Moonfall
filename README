@@ -1,4 +1,4 @@
-CSS::Moonfall 0.03
+CSS::Moonfall 0.04
 
 Moonfall is an application for the dynamic generation of CSS. The problem it
 solves is making CSS more programmable. The most basic usage is to define
