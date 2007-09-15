@@ -16,13 +16,10 @@ sub filter
 
     while (length $in)
     {
-        $in =~ s{^([^\[]+)(?=\[)}{} or return $out . $in;
-        my $prefix = $1;
-        $out .= $prefix;
-
-        ((my $extracted), $in)
-            = extract_bracketed($in, '[q]');
+        ((my $extracted), $in, my $prefix)
+            = extract_bracketed($in, '[q]', '[^\[]+');
         return $out . $in if !defined($extracted);
+        $out .= $prefix;
 
         # get rid of the []
         substr($extracted, -1, 1, '');
