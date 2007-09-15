@@ -204,7 +204,7 @@ our $VERSION = '0.03';
 
 =head1 DESCRIPTION
 
-C<Moonfall> is a program for the dynamic generation of CSS. The problem it
+C<Moonfall> is an application for the dynamic generation of CSS. The problem it
 solves is making CSS more programmable. The most basic usage is to define
 variables within CSS (e.g., so similar elements can have their common color
 defined in one and only one place). C<CSS::Moonfall> aims to be a faithful port
@@ -279,19 +279,7 @@ If any value looks like a plain integer, it will have C<px> appended to it.
 
 =head1 KNOWN BUGS
 
-=over 4
-
-=item
-
-The code that looks for C<[...]> is just a simple regular expression. This means
-you cannot include C<]> in your Perl code. This will be fixed in 0.03.
-
-=item
-
-You cannot have the C<[...]> span multiple lines. This too will be fixed in
-0.03.
-
-=back
+None!
 
 =head1 SEE ALSO
 

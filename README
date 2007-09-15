@@ -1,12 +1,12 @@
 CSS::Moonfall 0.03
 
-Moonfall is a program for the dynamic generation of CSS. The problem it
+Moonfall is an application for the dynamic generation of CSS. The problem it
 solves is making CSS more programmable. The most basic usage is to define
 variables within CSS (e.g., so similar elements can have their common color
 defined in one and only one place). CSS::Moonfall aims to be a faithful port
 from Lua to Perl.
 
-See L<http://moonfall.org/> for more details.
+See http://moonfall.org/ for more details.
 
 MAJOR CHANGES
     0.03: support balanced brackets
