@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use parent 'Exporter';
 use Carp;
+use Text::Balanced 'extract_bracketed';
 
 our @EXPORT = qw/filter fill/;
 
