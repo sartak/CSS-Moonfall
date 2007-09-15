@@ -65,7 +65,7 @@ sub _process
     $in =~ s/^\s+//;
     $in =~ s/\s+$//;
 
-    if ($in =~ /^[a-zA-Z]\w*/)
+    if ($in =~ /^[a-zA-Z_]\w*/)
     {
         return $in if !$top;
         $in = '$' . $in;
