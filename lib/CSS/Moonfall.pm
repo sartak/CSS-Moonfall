@@ -12,17 +12,32 @@ sub filter
 {
     my $package = shift;
     my $in = shift;
+    my $out = '';
 
-    $in =~ s{
-             (.*?)    # 1: indentation / check for other chars on the line
-             \[       # literal
-             ([^]]+)  # 2: what we want to filter
-             \]       # literal
-             (?=(.*)) # 3: check for other chars on the line
-            }{
-                $1 . _process($package, $2, 1, $1, $3)
-            }xeg;
-    return $in;
+    while (length $in)
+    {
+        $in =~ s{^([^\[]+)(?=\[)}{} or return $out . $in;
+        my $prefix = $1;
+        $out .= $prefix;
+
+        ((my $extracted), $in)
+            = extract_bracketed($in, '[q]');
+        return $out . $in if !defined($extracted);
+
+        # get rid of the []
+        substr($extracted, -1, 1, '');
+        substr($extracted, 0, 1, '');
+
+        # get the rest of the line around the extracted text so we can check
+        # how much we should indent, and whether to compress the output into
+        # one line
+        my ($preline)  = $prefix =~ /(.*)$/;
+        my ($postline) = $in     =~ /^(.*)/;
+
+        $out .= _process($package, $extracted, 1, $preline, $postline);
+    }
+
+    return $out;
 }
 
 sub fill
