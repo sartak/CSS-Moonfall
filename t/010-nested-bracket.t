@@ -17,7 +17,7 @@ INPUT
 is($out, <<"EXPECTED", "nested brackets work");
 #site_container {
     width: 200px;
-    min-width: 1000px;
+    min-width: 100px;
     }
 
 #top_container {
