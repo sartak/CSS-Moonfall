@@ -1,4 +1,4 @@
-CSS::Moonfall 0.02
+CSS::Moonfall 0.03
 
 Moonfall is a program for the dynamic generation of CSS. The problem it
 solves is making CSS more programmable. The most basic usage is to define
@@ -9,6 +9,7 @@ from Lua to Perl.
 See L<http://moonfall.org/> for more details.
 
 MAJOR CHANGES
+    0.03: support balanced brackets
     0.01: first version
 
 INSTALLATION
