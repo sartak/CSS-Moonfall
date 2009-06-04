@@ -2,7 +2,7 @@
 package CSS::Moonfall;
 use strict;
 use warnings;
-use parent 'Exporter';
+use base 'Exporter';
 use Carp;
 use Text::Balanced 'extract_bracketed';
 

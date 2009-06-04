@@ -7,7 +7,6 @@ all_from       'lib/CSS/Moonfall.pm';
 githubmeta;
 
 requires       'Text::Balanced' => '2.0.0';
-requires       'parent';
 
 auto_install;
 WriteAll;
