@@ -2,7 +2,6 @@ package CSS::Moonfall;
 use strict;
 use warnings;
 use base 'Exporter';
-use Carp;
 use Text::Balanced 'extract_bracketed';
 
 our @EXPORT = qw/filter fill/;
@@ -39,7 +38,11 @@ sub filter
 sub fill
 {
     my $values = shift;
-    my $total = delete $values->{total} or croak "You must define a total size in a call to fill.";
+    my $total = delete $values->{total} or do {
+        require Carp;
+        Carp::croak "You must define a total size in a call to fill.";
+    };
+
     my $unfilled = 0;
 
     for my $k (keys %$values)
