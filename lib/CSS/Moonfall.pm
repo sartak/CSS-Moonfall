@@ -5,6 +5,7 @@ use base 'Exporter';
 use Text::Balanced 'extract_bracketed';
 
 our @EXPORT = qw/filter fill/;
+our $VERSION = '0.04';
 
 sub filter
 {
@@ -179,17 +180,13 @@ sub _expand
     return @kv;
 }
 
+1;
+
+__END__
+
 =head1 NAME
 
 CSS::Moonfall - port of Lua's Moonfall for dynamic CSS generation
-
-=head1 VERSION
-
-Version 0.04 released ???
-
-=cut
-
-our $VERSION = '0.04';
 
 =head1 SYNOPSIS
 
@@ -339,6 +336,4 @@ This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 
 =cut
-
-1;
 
