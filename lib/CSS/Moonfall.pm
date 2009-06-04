@@ -276,10 +276,6 @@ then you'll get output that looks like:
 
 If any value looks like a plain integer, it will have C<px> appended to it.
 
-=head1 KNOWN BUGS
-
-None!
-
 =head1 SEE ALSO
 
 The original Lua Moonfall: L<http://moonfall.org/>
@@ -291,42 +287,6 @@ Shawn M Moore, C<< <sartak at gmail.com> >>
 =head1 ORIGINAL AUTHOR
 
 Kevin Swope, C<< <kevin at moonfall.org> >>
-
-=head1 BUGS
-
-No known bugs.
-
-Please report any bugs through RT: email
-C<bug-css-moonfall at rt.cpan.org>, or browse to
-L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=CSS-Moonfall>.
-
-=head1 SUPPORT
-
-You can find this documentation for this module with the perldoc command.
-
-    perldoc CSS::Moonfall
-
-You can also look for information at:
-
-=over 4
-
-=item * AnnoCPAN: Annotated CPAN documentation
-
-L<http://annocpan.org/dist/CSS-Moonfall>
-
-=item * CPAN Ratings
-
-L<http://cpanratings.perl.org/d/CSS-Moonfall>
-
-=item * RT: CPAN's request tracker
-
-L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=CSS-Moonfall>
-
-=item * Search CPAN
-
-L<http://search.cpan.org/dist/CSS-Moonfall>
-
-=back
 
 =head1 COPYRIGHT AND LICENSE
 
