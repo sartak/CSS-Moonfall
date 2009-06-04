@@ -1,4 +1,3 @@
-#!perl
 package CSS::Moonfall;
 use strict;
 use warnings;
