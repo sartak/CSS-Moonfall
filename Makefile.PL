@@ -8,10 +8,6 @@ author         'Shawn M Moore, C<< <sartak at gmail.com> >>';
 
 requires       'Text::Balanced' => '2.0.0';
 requires       'parent';
-requires       'Exporter';
-requires       'Carp';
-
-build_requires 'Test::More';
 
 auto_install;
 WriteAll;
