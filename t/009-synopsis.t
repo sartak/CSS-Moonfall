@@ -1,4 +1,3 @@
-#!perl -T
 package MySite::CSS;
 use CSS::Moonfall;
 our $page_width = 1000;
