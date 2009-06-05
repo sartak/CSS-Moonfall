@@ -255,11 +255,11 @@ The original Lua Moonfall: L<http://moonfall.org/>
 
 =head1 PORTER
 
-Shawn M Moore, C<< <sartak at gmail.com> >>
+Shawn M Moore, C<sartak@gmail.com>
 
 =head1 ORIGINAL AUTHOR
 
-Kevin Swope, C<< <kevin at moonfall.org> >>
+Kevin Swope, C<kevin@moonfall.org>
 
 =head1 COPYRIGHT AND LICENSE
 
