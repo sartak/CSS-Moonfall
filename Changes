@@ -1,7 +1,7 @@
 Revision history for CSS::Moonfall
 
-0.04    ???
-        None yet!
+0.04    Fri Jun 5 00:14:42 2009
+        Modernize the dist.
 
 0.03    Sat Sep 15 18:06:59 2007
         Allow balanced brackets (and newlines) inside a code block
