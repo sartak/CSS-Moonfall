@@ -5,7 +5,7 @@ use base 'Exporter';
 use Text::Balanced 'extract_bracketed';
 
 our @EXPORT = qw/filter fill/;
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 sub filter {
     my $package = shift;
