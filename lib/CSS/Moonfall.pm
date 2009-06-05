@@ -7,14 +7,12 @@ use Text::Balanced 'extract_bracketed';
 our @EXPORT = qw/filter fill/;
 our $VERSION = '0.04';
 
-sub filter
-{
+sub filter {
     my $package = shift;
     my $in = shift;
     my $out = '';
 
-    while (length $in)
-    {
+    while (length $in) {
         ((my $extracted), $in, my $prefix)
             = extract_bracketed($in, '[q]', '[^\[]+');
         return $out . $in if !defined($extracted);
@@ -36,8 +34,7 @@ sub filter
     return $out;
 }
 
-sub fill
-{
+sub fill {
     my $values = shift;
     my $total = delete $values->{total} or do {
         require Carp;
@@ -46,22 +43,18 @@ sub fill
 
     my $unfilled = 0;
 
-    for my $k (keys %$values)
-    {
-        if (defined(my $w = $values->{$k}))
-        {
+    for my $k (keys %$values) {
+        if (defined(my $w = $values->{$k})) {
             $total -= $w;
         }
-        else
-        {
+        else {
             ++$unfilled;
         }
     }
 
     $total = int($total / $unfilled);
 
-    for (values %$values)
-    {
+    for (values %$values) {
         defined or $_ = $total;
     }
 
@@ -69,19 +62,17 @@ sub fill
 }
 
 # this is where all the logic of expanding [foo] into some arbitrary string is
-sub _process
-{
+sub _process {
     my $package = shift;
-    my $in = shift;
-    my $top = shift;
-    my $pre = shift;
-    my $post = shift;
+    my $in      = shift;
+    my $top     = shift;
+    my $pre     = shift;
+    my $post    = shift;
 
     $in =~ s/^\s+//;
     $in =~ s/\s+$//;
 
-    if ($in =~ /^[a-zA-Z_]\w*/)
-    {
+    if ($in =~ /^[a-zA-Z_]\w*/) {
         return $in if !$top;
         $in = '$' . $in;
     }
@@ -90,19 +81,16 @@ sub _process
 
     my @kv = _expand($out);
 
-    if (@kv > 1)
-    {
+    if (@kv > 1) {
         my $joiner = ' ';
         my $indent = '';
-        if ($pre =~ /^\s*$/ && $post =~ /^\s*$/)
-        {
+        if ($pre =~ /^\s*$/ && $post =~ /^\s*$/) {
             $joiner = "\n";
             $indent = $pre;
         }
 
         my $first = 0;
-        $out = join $joiner, map
-        {
+        $out = join $joiner, map {
             my ($k, $v) = @$_;
             $k =~ s/_/-/g;
             $v = _process($package, $v, 0, $pre, $post);
@@ -110,8 +98,7 @@ sub _process
         }
         sort {$a->[0] cmp $b->[0]} @kv;
     }
-    elsif ($kv[0] =~ /^\d+$/)
-    {
+    elsif ($kv[0] =~ /^\d+$/) {
         $out .= 'px';
     }
 
@@ -121,56 +108,42 @@ sub _process
 # try to expand an array/hash ref, recursively, into a list of pairs
 # if a value is a reference, then the key is dropped and the value is expanded
 # in place
-sub _expand
-{
+sub _expand {
     my $in = shift;
     return $in if !ref($in);
 
     my @kv;
 
-    if (ref($in) eq 'HASH')
-    {
-        while (my ($k, $v) = each %$in)
-        {
-            if (ref($v))
-            {
+    if (ref($in) eq 'HASH') {
+        while (my ($k, $v) = each %$in) {
+            if (ref($v)) {
                 push @kv, _expand($v);
             }
-            else
-            {
+            else {
                 push @kv, [$k => $v];
             }
         }
     }
-    elsif (ref($in) eq 'ARRAY')
-    {
-        if (ref($in->[0]) eq 'ARRAY')
-        {
-            for (@$in)
-            {
+    elsif (ref($in) eq 'ARRAY') {
+        if (ref($in->[0]) eq 'ARRAY') {
+            for (@$in) {
                 my ($k, $v) = @$_;
-                if (ref($v))
-                {
+                if (ref($v)) {
                     push @kv, _expand($v);
                 }
-                else
-                {
+                else {
                     push @kv, [$k => $v];
                 }
             }
         }
-        else
-        {
+        else {
             my $i;
-            for ($i = 0; $i < @$in; $i += 2)
-            {
+            for ($i = 0; $i < @$in; $i += 2) {
                 my ($k, $v) = ($in->[$i], $in->[$i+1]);
-                if (ref($v))
-                {
+                if (ref($v)) {
                     push @kv, _expand($v);
                 }
-                else
-                {
+                else {
                     push @kv, [$k => $v];
                 }
             }
